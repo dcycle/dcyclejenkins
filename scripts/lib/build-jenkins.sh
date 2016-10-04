@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 if [ -z "$1" ]; then
   echo 'Parameter 1 needs to be a data directory, for example:'
   echo '/Users/albert/Documents/dev/docker/data'

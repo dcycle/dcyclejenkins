@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 if [ ! -d "$1" ]; then

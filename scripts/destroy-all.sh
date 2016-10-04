@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 ./scripts/kill-container.sh myjenkinscli
