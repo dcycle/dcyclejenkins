@@ -55,7 +55,7 @@ if [ "$INSTALLED" == 'false' ]; then
     echo "then create user 1 with the following credentials:"
 
     ADMINUSER='admin'
-    ADMINPASS="$(./scripts/make-password.sh)"
+    ADMINPASS="$(./scripts/random-password.sh)"
 
     echo " => Use $ADMINUSER as a jenkins admin username"
     echo " => Use $ADMINPASS as a jenkins admin password"
