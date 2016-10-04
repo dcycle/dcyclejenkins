@@ -15,6 +15,11 @@ fi
 
 DATADIR="$1"
 
+# See https://github.com/jenkinsci/docker/issues/177#issuecomment-163656932
+# This problem occurs on CoreOS without NFS but not native Mac OS Docker.
+mkdir -p "$DATADIR"/jenkins
+sudo chown 1000 "$DATADIR"/jenkins
+
 ./scripts/kill-container.sh myjenkins
 
 docker build -f="Dockerfile-jenkins" \
