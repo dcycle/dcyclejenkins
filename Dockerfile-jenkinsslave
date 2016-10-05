@@ -1,0 +1,11 @@
+# Avoid Error response from daemon: client is newer than server
+# (client API version: 1.23, server API version: 1.22) error.
+# TODO figure out what this means and how to fix it.
+FROM docker:1.10-git
+
+RUN adduser -h /home/jenkins -s /bin/sh jenkins -D
+RUN echo jenkins:jenkins|chpasswd
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]

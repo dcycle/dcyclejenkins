@@ -14,13 +14,23 @@ if [ ! -d "$1" ]; then
   echo "$1 is not a valid directory"
   exit 1
 fi
+if [ "$2" != "data-volume-reset-perms" ] && [ "$2" != "data-volume-no-reset-perms" ]; then
+  echo 'The second parameter needs to be either:'
+  echo "data-volume-reset-perms or data-volume-no-reset-perms"
+  echo 'Using reset perms can fix https://github.com/jenkinsci/docker/issues/177#issuecomment-163656932'
+  echo 'which can occur on CoreOS; on native Mac OS X Docker, data-volume-no-reset-perms is.'
+  echo 'preferred.'
+  exit 1
+fi
 
 DATADIR="$1"
 
-# See https://github.com/jenkinsci/docker/issues/177#issuecomment-163656932
-# This problem occurs on CoreOS without NFS but not native Mac OS Docker.
-mkdir -p "$DATADIR"/jenkins
-sudo chown 1000 "$DATADIR"/jenkins
+if [ "$2" == 'data-volume-reset-perms' ]; then
+  # See https://github.com/jenkinsci/docker/issues/177#issuecomment-163656932
+  # This problem occurs on CoreOS without NFS but not native Mac OS Docker.
+  mkdir -p "$DATADIR"/jenkins
+  sudo chown 1000 "$DATADIR"/jenkins
+fi
 
 ./scripts/kill-container.sh myjenkins
 
@@ -29,6 +39,7 @@ docker build -f="Dockerfile-jenkins" \
 
 docker run -d --name myjenkins \
   -p 8080:8080 \
+  --link myjenkinsslave:slave \
   --volume "$DATADIR"/jenkins:/var/jenkins_home \
   myjenkins-image
 
@@ -37,6 +48,13 @@ if [ "$(docker exec myjenkins /bin/bash -c 'cat /var/jenkins_home/users/*/config
 else
   INSTALLED=true
 fi
+
+echo "[info] About to wait 30 seconds for Jenkins to be up and running. This"
+echo "       allows time for the /var/jenkins_home/secrets/initialAdminPassword"
+echo "       file to be generated if this is a first-time setup; it also allows"
+echo "       time for the Jenkins frontend to be != 503 (service unavailable)"
+echo "       which can break the cli."
+sleep 30
 
 if [ "$INSTALLED" == 'false' ]; then
   while [ "$(docker exec myjenkins /bin/bash -c 'if [ -f /var/jenkins_home/secrets/initialAdminPassword ]; then echo ready-for-install; else echo not-ready-for-install; fi')" == 'not-ready-for-install' ]; do
