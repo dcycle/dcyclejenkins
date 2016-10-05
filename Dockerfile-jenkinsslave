@@ -6,6 +6,12 @@ FROM docker:1.10-git
 RUN adduser -h /home/jenkins -s /bin/sh jenkins -D
 RUN echo jenkins:jenkins|chpasswd
 
-EXPOSE 22
+# add openssh and clean
+RUN apk add --update openssh \
+&& rm  -rf /tmp/* /var/cache/apk/*
+# add entrypoint script
+ADD docker-resources/Dockerfile-jenkinsslave/docker-entrypoint.sh /usr/sbin
 
-CMD ["/usr/sbin/sshd", "-D"]
+EXPOSE 22
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["/usr/sbin/sshd","-D"]

@@ -28,6 +28,8 @@ DATADIR="$1"
 ./scripts/lib/build-jenkins.sh "$DATADIR" "$2"
 ./scripts/lib/build-jenkinscli.sh
 
+./scripts/reset-master-slave-ssh.sh
+
 echo " => You can now acces your Jenkins instance at port 8080."
 echo " => Your data is at $DATADIR."
 echo " => You can always reset the admin password by typing ./scripts/reset-password.sh"

@@ -10,6 +10,7 @@ docker build -f="Dockerfile-jenkinsslave" \
 
 docker run \
   --name myjenkinsslave \
-  -v /var/run/docker.sock:/var/run/docker.sock -dti myjenkinsslave-image /bin/sh
+  -v /var/run/docker.sock:/var/run/docker.sock -dti myjenkinsslave-image \
+  /bin/sh -c 'ssh-keygen -A && /usr/sbin/sshd -D'
 
 echo "[info] Jenkins Slave should be fully available now."
