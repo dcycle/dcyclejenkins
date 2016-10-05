@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "[info] (re-)starting to build Jenkins."
+
 if [ -z "$1" ]; then
   echo 'Parameter 1 needs to be a data directory, for example:'
   echo '/Users/albert/Documents/dev/docker/data'
@@ -39,7 +41,7 @@ fi
 if [ "$INSTALLED" == 'false' ]; then
   while [ "$(docker exec myjenkins /bin/bash -c 'if [ -f /var/jenkins_home/secrets/initialAdminPassword ]; then echo ready-for-install; else echo not-ready-for-install; fi')" == 'not-ready-for-install' ]; do
     echo "Waiting for the file /var/jenkins_home/secrets/initialAdminPassword to"
-    echo "be generated on the myjenkins container."
+    echo "be generated on the myjenkins container. This should take less than a minute."
     sleep 5;
   done
 
@@ -72,3 +74,5 @@ if [ "$INSTALLED" == 'false' ]; then
     fi
   done
 fi
+
+echo "[info] Jenkins should be fully available now."
