@@ -51,7 +51,7 @@ Let's say you want to make sure the [Ubuntu Docker image](https://hub.docker.com
 
  * create a new Freestyle project job called "Ubuntu-ls" on your Jenkins dashboard;
  * add the "execute shell" build step;
- * in the shell script section, add `ssh root@slave /bin/sh -c "/usr/local/bin/docker run ubuntu 'ls -lah /'"`
+ * in the shell script section, add `ssh root@slave "/usr/local/bin/docker run ubuntu ls -lah /"`
  * save and run the build ("Build Now");
  * you should see a passing build.
 
@@ -64,4 +64,4 @@ Some useful commands
 Resources
 -----
 
- * [Running Docker in Jenkins (in Docker), Adrian Mouat, Container-Solutions, March 11, 2015](http://container-solutions.com/running-docker-in-jenkins-in-docker/). 
+ * [Running Docker in Jenkins (in Docker), Adrian Mouat, Container-Solutions, March 11, 2015](http://container-solutions.com/running-docker-in-jenkins-in-docker/).
