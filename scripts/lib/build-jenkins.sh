@@ -49,12 +49,13 @@ else
   INSTALLED=true
 fi
 
-echo "[info] About to wait 30 seconds for Jenkins to be up and running. This"
+WAIT=40
+echo "[info] About to wait $WAIT seconds for Jenkins to be up and running. This"
 echo "       allows time for the /var/jenkins_home/secrets/initialAdminPassword"
 echo "       file to be generated if this is a first-time setup; it also allows"
 echo "       time for the Jenkins frontend to be != 503 (service unavailable)"
 echo "       which can break the cli."
-sleep 30
+sleep "$WAIT"
 
 if [ "$INSTALLED" == 'false' ]; then
   while [ "$(docker exec myjenkins /bin/bash -c 'if [ -f /var/jenkins_home/secrets/initialAdminPassword ]; then echo ready-for-install; else echo not-ready-for-install; fi')" == 'not-ready-for-install' ]; do

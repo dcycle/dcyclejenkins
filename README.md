@@ -42,7 +42,7 @@ Step 2: run the installation steps.
 Where builds are run
 -----
 
-A "myjenkinsslave" container is provided on the Docker host, and is linked to the "myjenkins" container under the name "slave", and that container share the Docker socket with the host. This means that the "myjenkinsslave" can manage all Docker containers on the host, and potentially anything else. This means you should only run scripts you trust on containers.
+A "myjenkinsslave" container is provided on the Docker host, and is linked to the "myjenkins" container under the name "slave", and that container shares the Docker socket with the host. This means that the "myjenkinsslave" can manage all Docker containers on the host, and potentially anything else; you should only run scripts you trust on containers.
 
 Example job
 -----
