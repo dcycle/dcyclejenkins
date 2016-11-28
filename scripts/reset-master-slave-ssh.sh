@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e
 
+# Create an ssh key pair only if one does not already exist. The key pair may be
+# used to link Jenkins to external servers so we don't want to rebuild it if
+# it exists.
 docker exec myjenkins /bin/bash -c \
-  'rm -rf /var/jenkins_home/.ssh/id_rsa && ssh-keygen -t rsa -f /var/jenkins_home/.ssh/id_rsa -N ""'
+  'if [ ! -f /var/jenkins_home/.ssh/id_rsa ]; then rm -rf /var/jenkins_home/.ssh/id_rsa && ssh-keygen -t rsa -f /var/jenkins_home/.ssh/id_rsa -N ""; fi'
 
 rm -rf /tmp/jenkins-public-key
 mkdir -p /tmp/jenkins-public-key
