@@ -1,3 +1,0 @@
-FROM chickenzord/jenkins-cli
-
-ADD /tmp/jenkins-cli-ssh /ssh
