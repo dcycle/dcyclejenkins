@@ -21,12 +21,12 @@ Then:
 
  * Enter the result at my-server:8080.
  * Install suggested plugins
- * If you do not want to remember your password, you can always reset it later (see "Resetting the admin password").
+ * If you do not want to remember your password, use the username "admin", and see "Resetting the admin password".
 
 Resetting your login password
 -----
 
-To change the password for all accounts and print it to the screen:
+To change the password for the admin account and print it to the screen:
 
     ./reset-password.sh
 
