@@ -6,62 +6,36 @@ A Docker-based Jenkins installation.
 Prerequisites
 -----
 
- * CoreOS (recommended)
- * Docker (included by default on CoreOS)
+ * Docker, Docker-compose.
 
-Installation
+Installing, restart or updating
 -----
 
-Step 1: choose a data folder, in this example we'll use:
+    docker-compose up -d
 
-    mkdir /home/core/data
+If this is your first time running Jenkins, you will have to create your first user; first go to:
 
-This is the directory containing all your jobs, builds, and that you will be backing up.
+    docker-compose run jenkins /bin/bash -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
 
-Step 2: clone this repo, for example if you are on CoreOS you can do:
+Then:
 
-    cd /home/core
-    git clone https://github.com/dcycleproject/dcyclejenkins.git
-    cd dcyclejenkins
+ * Enter the result at my-server:8080.
+ * Install suggested plugins
+ * If you do not want to remember your password, you can always reset it later (see "Resetting the admin password").
 
-Step 3: run the build script and follow instructions:
-
-    ./scripts/build-all.sh /home/core/data
-
-If all goes well, you should now have a running Jenkins instance at port 8080.
-
-You can reset the admin password using `./scripts/reset-password.sh `.
-
-Updates, upgrades
+Resetting your login password
 -----
 
-Step 1: back up your data folder.
+To change the password for all accounts and print it to the screen:
 
-Step 2: run the installation steps.
+    ./reset-password.sh
 
-Where builds are run
+Stopping containers while keeping your data
 -----
 
-A "myjenkinsslave" container is provided on the Docker host, and is linked to the "myjenkins" container under the name "slave", and that container shares the Docker socket with the host. This means that the "myjenkinsslave" can manage all Docker containers on the host, and potentially anything else; you should only run scripts you trust on containers.
+    docker-compose down
 
-Example job
+Uninstalling
 -----
 
-Let's say you want to make sure the [Ubuntu Docker image](https://hub.docker.com/_/ubuntu/) can be run correctly and that the `ls -lah /` command works, you can
-
- * create a new Freestyle project job called "Ubuntu-ls" on your Jenkins dashboard;
- * add the "execute shell" build step;
- * in the shell script section, add `ssh root@slave "/usr/local/bin/docker run ubuntu ls -lah /"`
- * save and run the build ("Build Now");
- * you should see a passing build.
-
-Some useful commands
------
-
- * To access Jenkins CLI use `./scripts/jenkins-cli.sh "command"`, for example `./scripts/jenkins-cli.sh "help"`
- * To reset your admin password use `./scripts/reset-password.sh `
-
-Resources
------
-
- * [Running Docker in Jenkins (in Docker), Adrian Mouat, Container-Solutions, March 11, 2015](http://container-solutions.com/running-docker-in-jenkins-in-docker/).
+    docker-compose down -v

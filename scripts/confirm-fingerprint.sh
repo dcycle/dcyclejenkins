@@ -7,4 +7,4 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-docker exec -t -u jenkins myjenkins /bin/bash -c "ssh -oStrictHostKeyChecking=no '$1' 'ls'"
+docker-compose exec -t -u jenkins jenkins /bin/bash -c "ssh -oStrictHostKeyChecking=no '$1' 'ls'"

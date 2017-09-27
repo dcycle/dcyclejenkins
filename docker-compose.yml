@@ -1,0 +1,16 @@
+# This is where we define how to set up a complete environment with
+# our container(s).
+version: '2'
+
+volumes:
+  jenkins:
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins:/var/jenkins_home
+    working_dir: /var/jenkins_home
+    restart: always
