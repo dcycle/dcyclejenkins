@@ -28,7 +28,7 @@ Resetting your login password
 
 To change the password for the admin account and print it to the screen:
 
-    ./reset-password.sh
+    ./scripts/reset-password.sh
 
 Stopping containers while keeping your data
 -----
