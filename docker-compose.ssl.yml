@@ -1,0 +1,8 @@
+# Prodcution should not map ports, we'll use
+# http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/ instead.
+version: '3'
+
+services:
+  jenkins:
+    env_file:
+      - ~/.dcyclejenkins.encryption.env
