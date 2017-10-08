@@ -27,7 +27,7 @@ To deploy this **with** SSL on HTTPS:
     docker-compose -f docker-compose.yml \
       -f docker-compose.ssl.yml up -d
 
-And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/).
+And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/) and [Deploying Letsencrypt with Docker-Compose, Oct. 6, Dcycle blog](http://blog.dcycle.com/blog/7f3ea9e1/letsencrypt-docker-compose/).
 
 If this is your first time running Jenkins, you will have to create your first user; first go to:
 
