@@ -11,7 +11,23 @@ Prerequisites
 Installing, restart or updating
 -----
 
-    docker-compose up -d
+To deploy this **without** SSL on HTTP:
+
+  docker-compose -f docker-compose.yml \
+    -f docker-compose.nossl.yml up -d
+
+And your Jenkins server will be at myserver:8080.
+
+To deploy this **with** SSL on HTTPS:
+
+    echo 'VIRTUAL_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
+    echo 'LETSENCRYPT_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
+    echo 'LETSENCRYPT_EMAIL=myemail@example.com' >> ~/.dcyclejenkins.encryption.env
+
+    docker-compose -f docker-compose.yml \
+      -f docker-compose.ssl.yml up -d
+
+And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/) and [Deploying Letsencrypt with Docker-Compose, Oct. 6, Dcycle blog](http://blog.dcycle.com/blog/7f3ea9e1/letsencrypt-docker-compose/).
 
 If this is your first time running Jenkins, you will have to create your first user; first go to:
 
