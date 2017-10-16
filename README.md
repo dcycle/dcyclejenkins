@@ -39,6 +39,10 @@ Then:
  * Install suggested plugins
  * If you do not want to remember your password, use the username "admin", and see "Resetting the admin password".
 
+To update, assuming you are using SSL, run:
+
+    ./scripts/update.sh
+
 Resetting your login password
 -----
 
