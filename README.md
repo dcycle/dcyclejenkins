@@ -92,3 +92,35 @@ To avoid this you must log in with a trusted network, type:
 And then, if [the fingerprint is valid](https://help.github.com/articles/github-s-ssh-key-fingerprints/), when prompted "Are you sure you want to continue connecting (yes/no)", type:
 
     yes.
+
+Command line (CLI) access
+-----
+
+Start by making sure you have a private-public ssh keypair. To check if there already is one, type:
+
+    docker-compose exec jenkins /bin/bash -c 'cat ~/.ssh/id_rsa.pub'
+
+To create one, run:
+
+    docker-compose exec jenkins /bin/bash -c 'ssh-keygen -t rsa && cat ~/.ssh/id_rsa.pub'
+
+Now, add the resulting public key at /user/admin/configure.
+
+Go to /configureSecurity/ and set the SSHD port to fixed and enter a random number between 50000 and 55000.
+
+You might need to restart jenkins by visiting /restart
+
+Now you can use the command line:
+
+    docker-compose exec jenkins /bin/bash -c 'java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 -ssh -user admin help'
+
+Here is a [nifty trick](https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal) if you want to automate the updating of Jenkins plugins, you need to run this on the container itself (`docker-compose exec jenkins /bin/bash`):
+
+    UPDATE_LIST=$( java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 -ssh -user admin list-plugins | grep -e ')$' | awk '{ print $1 }' );
+    if [ ! -z "${UPDATE_LIST}" ]; then
+      echo Updating Jenkins Plugins: ${UPDATE_LIST};
+      java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 -ssh -user admin install-plugin ${UPDATE_LIST};
+      java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 -ssh -user admin safe-restart;
+    fi
+
+This might cause Jenkins to restart.
