@@ -10,5 +10,6 @@ services:
     image: jenkins/jenkins:lts
     volumes:
       - jenkins:/var/jenkins_home
+      - ./docker-resources:/scripts
     working_dir: /var/jenkins_home
     restart: always
