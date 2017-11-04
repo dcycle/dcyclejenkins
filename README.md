@@ -126,3 +126,20 @@ Make sure you have CLI access (see above), then run, from the command line:
 To run this from a job (for example to periodically and automatically update plugins), run:
 
     /scripts/update-plugins.sh
+
+Setup
+-----
+
+This project is meant to be used with a Ubuntu Docker host; and the Jenkins Docker container is meant to have ssh access to the host. Do not put any critical software on the host other than Jenkins. You can use throw-away virtual machines (using for example [this](https://github.com/dcycle/docker-digitalocean-php) or another API client for DigitalOcean or another cloud VM provider).
+
+Scripts
+-----
+
+A collection of scripts, which might be useful to you, is included. The scripts are meant to be called from Jenkins, and might require access to the Ubuntu host.
+
+To use these, make sure this repo is at `~/dcyclejenkins` on the host, and enter the ssh credentials in `~/.docker-host-ssh-credentials` on the container:
+
+    DOCKERHOSTUSER=notroot
+    DOCKERHOST=ci.example.com
+
+* `/scripts/atq.sh`: lists the pending jobs set up using [at](http://manpages.ubuntu.com/manpages/xenial/en/man1/at.1posix.html)
