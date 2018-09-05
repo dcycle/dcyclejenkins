@@ -143,3 +143,36 @@ To use these, make sure this repo is at `~/dcyclejenkins` on the host, and enter
     DOCKERHOST=ci.example.com
 
 * `/scripts/atq.sh`: lists the pending jobs set up using [at](http://manpages.ubuntu.com/manpages/xenial/en/man1/at.1posix.html)
+
+What if my secure site breaks?
+-----
+
+If your secure (https) server is overloaded or in some other circumstances, you may see a "Bad Gateway" issue or your site may refuse to connect to the secure port. Wait 5 minutes, and if this still occurs, you can use the following script to kill all your containers (assuming you have nothing else important on your server) and start over (the data will remain intact):
+
+    docker network disconnect dcyclejenkins_default nginx-proxy
+    (docker stop $(docker ps -a -q) &
+    docker update --restart=no $(docker ps -a -q) &
+    docker stop $(docker ps -a -q) &
+    docker update --restart=no $(docker ps -a -q) &
+    systemctl restart docker)
+    docker ps
+    docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+    docker rm nginx-proxy
+    docker run -d -p 80:80 -p 443:443 \
+      --name nginx-proxy \
+      -v "$HOME"/certs:/etc/nginx/certs:ro \
+      -v /etc/nginx/vhost.d \
+      -v /usr/share/nginx/html \
+      -v /var/run/docker.sock:/tmp/docker.sock:ro \
+      --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
+      --restart=always \
+      jwilder/nginx-proxy
+    docker rm nginx-letsencrypt
+    docker run -d \
+      --name nginx-letsencrypt \
+      -v "$HOME"/certs:/etc/nginx/certs:rw \
+      -v /var/run/docker.sock:/var/run/docker.sock:ro \
+      --volumes-from nginx-proxy \
+      --restart=always \
+      jrcs/letsencrypt-nginx-proxy-companion
+    docker ps
