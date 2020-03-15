@@ -39,9 +39,15 @@ Then:
  * Install suggested plugins
  * If you do not want to remember your password, use the username "admin", and see "Resetting the admin password".
 
-To update, assuming you are using SSL, run:
+To update to the latest version, assuming you are using SSL, run:
 
     ./scripts/update.sh
+
+You should also update your plugins:
+
+* go to /pluginManager/
+* select all by clicking "Select all"
+* install and restart Jenkins by checking the "Restart Jenkins when installation is complete and no jobs are running" checkbox
 
 Resetting your login password
 -----
