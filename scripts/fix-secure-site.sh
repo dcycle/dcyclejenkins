@@ -18,7 +18,7 @@ docker update --restart=no $(docker ps -a -q) &
 systemctl restart docker)
 docker ps
 docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-docker rm nginx-proxy
+docker rm nginx-proxy || true
 docker run -d -p 80:80 -p 443:443 \
   --name nginx-proxy \
   -v "$HOME"/certs:/etc/nginx/certs:ro \
@@ -28,7 +28,7 @@ docker run -d -p 80:80 -p 443:443 \
   --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
   --restart=always \
   jwilder/nginx-proxy
-docker rm nginx-letsencrypt
+docker rm nginx-letsencrypt || true
 docker run -d \
   --name nginx-letsencrypt \
   -v "$HOME"/certs:/etc/nginx/certs:rw \
