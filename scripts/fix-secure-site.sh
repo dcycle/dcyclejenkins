@@ -10,7 +10,7 @@ docker pull jenkins/jenkins:lts
 docker network prune -f
 docker container prune -f
 docker image prune -f
-docker network disconnect dcyclejenkins_default nginx-proxy
+docker network disconnect dcyclejenkins_default nginx-proxy || true
 (docker stop $(docker ps -a -q) &
 docker update --restart=no $(docker ps -a -q) &
 docker stop $(docker ps -a -q) &
