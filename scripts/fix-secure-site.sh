@@ -7,9 +7,9 @@ set -e
 docker pull jwilder/nginx-proxy
 docker pull jrcs/letsencrypt-nginx-proxy-companion
 docker pull jenkins/jenkins:lts
+docker network prune -f
 docker container prune -f
 docker image prune -f
-docker network prune -f
 docker network disconnect dcyclejenkins_default nginx-proxy
 (docker stop $(docker ps -a -q) &
 docker update --restart=no $(docker ps -a -q) &
