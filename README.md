@@ -13,8 +13,8 @@ Installing, restart or updating
 
 To deploy this **without** SSL on HTTP:
 
-  docker-compose -f docker-compose.yml \
-    -f docker-compose.nossl.yml up -d
+    docker-compose -f docker-compose.yml \
+      -f docker-compose.nossl.yml up -d
 
 And your Jenkins server will be at myserver:8080.
 
@@ -29,15 +29,30 @@ To deploy this **with** SSL on HTTPS:
 
 And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/) and [Deploying Letsencrypt with Docker-Compose, Oct. 6, Dcycle blog](http://blog.dcycle.com/blog/7f3ea9e1/letsencrypt-docker-compose/).
 
-If this is your first time running Jenkins, you will have to create your first user; first go to:
+If this is your first time running Jenkins, you will have to eitehr create your first user and start from scratch, or import a home directory
 
-    docker-compose run jenkins /bin/bash -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
+Starting from scratch
+-----
+
+To create your first user; first go to:
+
+    docker-compose run --rm jenkins /bin/bash -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
 
 Then:
 
  * Enter the result at my-server:8080.
  * Install suggested plugins
  * If you do not want to remember your password, use the username "admin", and see "Resetting the admin password".
+
+Starting from a home directory export
+-----
+
+See "Exporting data", below, on how to export data from another installation. If you have already exported data, you can import data by running:
+
+    ./scripts/import-data.sh
+
+Updating
+-----
 
 To update to the latest version, assuming you are using SSL, run:
 
@@ -48,6 +63,15 @@ You should also update your plugins:
 * go to /pluginManager/
 * select all by clicking "Select all"
 * install and restart Jenkins by checking the "Restart Jenkins when installation is complete and no jobs are running" checkbox
+
+Exporting data
+-----
+
+You can export your data by running:
+
+    ./scripts/export-data.sh
+
+This will result in a directory called ./do-not-commit/export/jenkins_home with your data.
 
 Resetting your login password
 -----
@@ -150,35 +174,16 @@ To use these, make sure this repo is at `~/dcyclejenkins` on the host, and enter
 
 * `/scripts/atq.sh`: lists the pending jobs set up using [at](http://manpages.ubuntu.com/manpages/xenial/en/man1/at.1posix.html)
 
+Getting data from a remote server
+-----
+
+    ./scripts/get-data-from-remote-server.sh
+
 What if my secure site breaks?
 -----
 
 If your secure (https) server is overloaded or in some other circumstances, you may see a "Bad Gateway" issue or your site may refuse to connect to the secure port. Wait 5 minutes, and if this still occurs, you can use the following script to kill all your containers (assuming you have nothing else important on your server) and start over (the data will remain intact):
 
-    docker network disconnect dcyclejenkins_default nginx-proxy
-    (docker stop $(docker ps -a -q) &
-    docker update --restart=no $(docker ps -a -q) &
-    docker stop $(docker ps -a -q) &
-    docker update --restart=no $(docker ps -a -q) &
-    systemctl restart docker)
-    docker ps
-    docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-    docker rm nginx-proxy
-    docker run -d -p 80:80 -p 443:443 \
-      --name nginx-proxy \
-      -v "$HOME"/certs:/etc/nginx/certs:ro \
-      -v /etc/nginx/vhost.d \
-      -v /usr/share/nginx/html \
-      -v /var/run/docker.sock:/tmp/docker.sock:ro \
-      --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy \
-      --restart=always \
-      jwilder/nginx-proxy
-    docker rm nginx-letsencrypt
-    docker run -d \
-      --name nginx-letsencrypt \
-      -v "$HOME"/certs:/etc/nginx/certs:rw \
-      -v /var/run/docker.sock:/var/run/docker.sock:ro \
-      --volumes-from nginx-proxy \
-      --restart=always \
-      jrcs/letsencrypt-nginx-proxy-companion
-    docker ps
+**Please make sure you know what you are doing before running this!**
+
+    ./scripts/fix-secure-site.sh
