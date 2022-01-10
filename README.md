@@ -36,7 +36,7 @@ Starting from scratch
 
 To create your first user; first go to:
 
-    docker-compose run jenkins /bin/bash -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
+    docker-compose run --rm jenkins /bin/bash -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
 
 Then:
 
