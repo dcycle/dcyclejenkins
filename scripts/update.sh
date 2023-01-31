@@ -4,7 +4,7 @@
 #
 set -e
 git pull origin master
-docker pull jenkins/jenkins:lts
+docker pull jenkins/jenkins:latest
 docker-compose -f docker-compose.yml \
   -f docker-compose.ssl.yml up -d
 docker restart nginx-proxy
