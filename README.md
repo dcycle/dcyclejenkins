@@ -20,6 +20,7 @@ And your Jenkins server will be at myserver:8080.
 
 To deploy this **with** SSL on HTTPS:
 
+    echo 'VIRTUAL_PORT=8080' >> ~/.dcyclejenkins.encryption.env
     echo 'VIRTUAL_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
     echo 'LETSENCRYPT_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
     echo 'LETSENCRYPT_EMAIL=myemail@example.com' >> ~/.dcyclejenkins.encryption.env
