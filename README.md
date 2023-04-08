@@ -25,6 +25,8 @@ To deploy this **with** SSL on HTTPS:
     echo 'LETSENCRYPT_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
     echo 'LETSENCRYPT_EMAIL=myemail@example.com' >> ~/.dcyclejenkins.encryption.env
 
+**Make sure LETSENCRYPT_EMAIL is a properly formatted email address, or else you will not get an SSL certificate**.
+
     docker-compose -f docker-compose.yml \
       -f docker-compose.ssl.yml up -d
 
@@ -188,3 +190,4 @@ If your secure (https) server is overloaded or in some other circumstances, you 
 **Please make sure you know what you are doing before running this!**
 
     ./scripts/fix-secure-site.sh
+    
