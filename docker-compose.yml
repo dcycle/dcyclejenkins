@@ -7,7 +7,9 @@ volumes:
 
 services:
   jenkins:
-    image: jenkins/jenkins:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - jenkins:/var/jenkins_home
       - ./docker-resources:/scripts
