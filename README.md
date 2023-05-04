@@ -20,14 +20,17 @@ And your Jenkins server will be at myserver:8080.
 
 To deploy this **with** SSL on HTTPS:
 
+    echo 'VIRTUAL_PORT=8080' >> ~/.dcyclejenkins.encryption.env
     echo 'VIRTUAL_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
     echo 'LETSENCRYPT_HOST=my-domain.example.com' >> ~/.dcyclejenkins.encryption.env
     echo 'LETSENCRYPT_EMAIL=myemail@example.com' >> ~/.dcyclejenkins.encryption.env
 
+**Make sure LETSENCRYPT_EMAIL is a properly formatted email address, or else you will not get an SSL certificate**.
+
     docker-compose -f docker-compose.yml \
       -f docker-compose.ssl.yml up -d
 
-And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/) and [Deploying Letsencrypt with Docker-Compose, Oct. 6, Dcycle blog](http://blog.dcycle.com/blog/7f3ea9e1/letsencrypt-docker-compose/).
+And follow the instructions at [Letsencrypt HTTPS for Drupal on Docker, Oct. 3, 2017, Dcycle blog](http://blog.dcycle.com/blog/170a6078/letsencrypt-drupal-docker/) and [Deploying Letsencrypt with Docker-Compose, Oct. 6, 2017, Dcycle blog](http://blog.dcycle.com/blog/7f3ea9e1/letsencrypt-docker-compose/).
 
 If this is your first time running Jenkins, you will have to eitehr create your first user and start from scratch, or import a home directory
 
@@ -187,3 +190,4 @@ If your secure (https) server is overloaded or in some other circumstances, you 
 **Please make sure you know what you are doing before running this!**
 
     ./scripts/fix-secure-site.sh
+    
