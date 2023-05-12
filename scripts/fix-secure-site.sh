@@ -6,7 +6,7 @@ set -e
 
 docker pull jwilder/nginx-proxy
 docker pull jrcs/letsencrypt-nginx-proxy-companion
-docker pull jenkins/jenkins:latest
+docker pull dcycle/jenkins:1
 docker network prune -f
 docker container prune -f
 docker image prune -f

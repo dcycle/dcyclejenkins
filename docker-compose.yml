@@ -7,9 +7,7 @@ volumes:
 
 services:
   jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: dcycle/jenkins:1
     volumes:
       - jenkins:/var/jenkins_home
       - ./docker-resources:/scripts
